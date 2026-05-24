@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Maktura mark — Concept 2 (Optimistic Energy), brand-locked.
+     Five connected nodes forming an M. Coral (top-left) → mango
+     (top-right) sunset gradient on the M's lines and middle node;
+     peach feet at the base. Source of truth:
+     apps/maktura-landing/src/app/_components/ConnectedNodesMark.tsx
+     (rendered live on maktura.com). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" aria-label="Maktura">
+  <defs>
+    <linearGradient id="maktura-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6B47"/>
+      <stop offset="100%" stop-color="#FFC857"/>
+    </linearGradient>
+  </defs>
+  <!-- Four lines forming the M -->
+  <line x1="50" y1="60" x2="50" y2="140" stroke="url(#maktura-grad)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="50" y1="60" x2="100" y2="120" stroke="url(#maktura-grad)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="100" y1="120" x2="150" y2="60" stroke="url(#maktura-grad)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="150" y1="60" x2="150" y2="140" stroke="url(#maktura-grad)" stroke-width="6" stroke-linecap="round"/>
+  <!-- Top corners — pure coral / pure mango at the warm extremes -->
+  <circle cx="50" cy="60" r="14" fill="#FF6B47"/>
+  <circle cx="150" cy="60" r="14" fill="#FFC857"/>
+  <!-- Middle dip — gradient-filled -->
+  <circle cx="100" cy="120" r="14" fill="url(#maktura-grad)"/>
+  <!-- Bottom feet — soft peach, smaller so the M doesn't feel bottom-heavy -->
+  <circle cx="50" cy="140" r="11" fill="#FFD8B2"/>
+  <circle cx="150" cy="140" r="11" fill="#FFD8B2"/>
+</svg>
