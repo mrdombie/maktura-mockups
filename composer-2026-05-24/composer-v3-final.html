@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maktura — Composer mockup v3 (2026-05-24) — every feature placed</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Brand */
+  --coral: #FF6B47;
+  --coral-soft: rgba(255, 107, 71, 0.10);
+  --coral-dim: rgba(255, 107, 71, 0.18);
+  --mango: #FFC857;
+  --mango-soft: rgba(255, 200, 87, 0.14);
+  --navy: #1A2940;
+  --navy-2: #2A3A5A;
+  --warm-white: #FFFCF7;
+  --cream: #FFF6E6;
+  --rule: #E8E0D2;
+  --rule-strong: #D4C9B0;
+  --ink-soft: #6A7588;
+  --ink-mid: #4B5573;
+  --sunset: linear-gradient(135deg, #FF6B47 0%, #FFC857 100%);
+  --sunset-soft: linear-gradient(135deg, rgba(255,107,71,0.10) 0%, rgba(255,200,87,0.16) 100%);
+
+  /* Signal */
+  --signal-ok: #22884F;
+  --signal-ok-soft: rgba(34, 136, 79, 0.10);
+  --signal-warn: #B7791F;
+  --signal-warn-soft: rgba(183, 121, 31, 0.12);
+  --signal-err: #C53030;
+  --signal-err-soft: rgba(197, 48, 48, 0.10);
+
+  /* Platform brand colours — apply ONLY on platform tabs + preview chrome + dots */
+  --src-linkedin: #0A66C2;
+  --src-x: #000000;
+  --src-instagram: linear-gradient(135deg, #FEDA77 0%, #F58529 25%, #DD2A7B 50%, #8134AF 75%, #515BD4 100%);
+  --src-tiktok: #FE2C55;
+  --src-youtube: #FF0000;
+
+  /* Effects */
+  --shadow-sm: 0 1px 3px rgba(26, 41, 64, 0.08);
+  --shadow-md: 0 4px 12px rgba(26, 41, 64, 0.10);
+  --shadow-lg: 0 8px 24px rgba(26, 41, 64, 0.12);
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--warm-white);
+  color: var(--navy);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-print-color-adjust: exact;
+}
+
+/* === LUCIDE === */
+.icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+  vertical-align: -3px;
+}
+
+.icon-sm { width: 13px; height: 13px; }
+.icon-xs { width: 11px; height: 11px; }
+.icon-lg { width: 20px; height: 20px; }
+
+/* === TOP NAV === */
+.topnav {
+  background: var(--navy);
+  color: var(--warm-white);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  background: var(--sunset);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-items { display: flex; gap: 4px; flex: 1; }
+
+.nav-item {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 252, 247, 0.6);
+  cursor: pointer;
+  transition: color 140ms;
+}
+
+.nav-item:hover { color: var(--warm-white); }
+.nav-item.active { background: rgba(255, 252, 247, 0.08); color: var(--warm-white); }
+
+.user-chip {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--sunset);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* === PAGE === */
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+}
+
+/* === CONTEXT CHIP — small dismissible "drafting from trend / article" hint.
+       Lives where a breadcrumb would, doesn't push the design down. === */
+.context-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 10px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 11.5px;
+  color: var(--ink-mid);
+  margin-bottom: 10px;
+}
+.context-chip strong { color: var(--navy); font-weight: 600; }
+.context-chip .context-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px;
+  margin-left: 2px; border-radius: 50%;
+  color: var(--ink-soft); cursor: pointer;
+  background: transparent;
+  border: none;
+}
+.context-chip .context-close:hover { background: var(--rule); color: var(--navy); }
+
+/* === META CHIPS — Campaign · Category · Tags · Lead-capture compressed into
+       a single inline-chip strip. Tucked under the editor, not a card. === */
+.meta-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px 3px 8px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--ink-mid);
+  cursor: pointer;
+}
+.meta-chip:hover { border-color: var(--rule-strong); }
+.meta-chip strong { color: var(--navy); font-weight: 600; }
+.meta-chip.empty { border-style: dashed; color: var(--ink-soft); }
+.meta-chip.on   { background: var(--signal-ok-soft); color: var(--signal-ok); border-color: rgba(34, 136, 79, 0.20); }
+.meta-chip.on strong { color: var(--signal-ok); }
+
+/* === FIT SUMMARY — voice-match + audience-match folded into the persona strip
+       on the RIGHT side, replacing the existing rule/sample counts only when
+       the user wants the fit signal. Two tiny chips, no extra row. === */
+.fit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: var(--cream);
+  color: var(--ink-mid);
+}
+.fit-chip.ok   { background: var(--signal-ok-soft); color: var(--signal-ok); }
+.fit-chip.warn { background: var(--signal-warn-soft); color: var(--signal-warn); }
+.fit-chip.err  { background: var(--signal-err-soft); color: var(--signal-err); }
+
+/* === SIGNALS DOTS — 4 tiny status dots in the preview header for ambient
+       signals (privilege · citation · cadence · voice match). Tooltip-only;
+       click expands. NO permanent ambient-sidebar card. === */
+.signals-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  margin-left: 6px;
+}
+.signals-dots .sdot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+}
+.signals-dots .sdot.ok   { background: var(--signal-ok); }
+.signals-dots .sdot.warn { background: var(--signal-warn); }
+.signals-dots .sdot.err  { background: var(--signal-err); }
+
+/* === OVERRIDE TOGGLE — small "Edit per-platform" icon-button on the
+       active variant tab. Click expands a tiny inline-row override panel
+       just under the editor body (NOT a permanent drawer). === */
+.override-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-soft);
+  padding: 2px;
+  margin-left: 4px;
+  border-radius: 4px;
+}
+.override-toggle:hover { background: var(--cream); color: var(--coral); }
+
+/* === SMALL-SECTION MOCK SHELL for state-card "drawer / popover / modal"
+       previews. Each state card hosts a mock preview; this gives them a
+       consistent frame without the heavy panel/banner styling from v1. === */
+.mock-frame {
+  margin-top: 6px;
+  padding: 10px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  font-size: 11.5px;
+  color: var(--ink-mid);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mock-frame .mock-title {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.mock-frame .mock-row {
+  display: flex; align-items: center; gap: 8px; font-size: 11.5px;
+}
+.mock-frame.coral { border-color: var(--coral-dim); background: linear-gradient(135deg, rgba(255,107,71,0.04), rgba(255,200,87,0.08)); }
+.mock-frame.warn  { border-color: rgba(183,121,31,0.30); background: var(--signal-warn-soft); }
+.mock-frame.err   { border-color: rgba(197,48,48,0.30);  background: var(--signal-err-soft); }
+
+
+/* === COMPACT HEADER === */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+.title-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  color: var(--navy);
+}
+
+.draft-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-mid);
+}
+
+.draft-status .live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--coral);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 71, 0.45); }
+  50%      { box-shadow: 0 0 0 6px rgba(255, 107, 71, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draft-status .live-dot { animation: none; }
+  .preview-card.swapping,
+  .editor-textarea:focus + .typing-pulse { animation: none; }
+}
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn-primary {
+  background: var(--sunset);
+  color: white;
+  border: none;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 1px 3px rgba(255, 107, 71, 0.30);
+  transition: transform 160ms, box-shadow 160ms;
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255, 107, 71, 0.30); }
+
+.btn-secondary {
+  background: white;
+  color: var(--navy);
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 140ms, background 140ms;
+}
+
+.btn-secondary:hover { border-color: var(--rule-strong); background: var(--cream); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-mid);
+  border: none;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-ghost:hover { color: var(--navy); background: var(--cream); }
+
+/* === PERSONA STRIP — voice indicator + style-rule chips === */
+.persona-strip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.persona-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 4px 4px;
+  background: var(--cream);
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.persona-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #4A69BD;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.persona-avatar.brand { background: var(--sunset); }
+.persona-avatar.publication { background: #8E44AD; }
+
+.persona-meta { display: flex; flex-direction: column; line-height: 1.15; }
+.persona-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.persona-role { font-size: 10.5px; color: var(--ink-soft); }
+
+.persona-strip .sep { width: 1px; height: 26px; background: var(--rule); }
+
+.style-chips {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.style-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-mid);
+}
+
+.style-chip.regulated { background: var(--coral-soft); color: var(--coral); }
+.style-chip-icon { color: var(--ink-soft); }
+.style-chip.regulated .style-chip-icon { color: var(--coral); }
+
+.persona-strip-spacer { flex: 1; }
+
+.persona-strip-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+.persona-strip-meta strong { color: var(--navy); font-weight: 600; }
+
+/* === MAIN GRID — editor + preview === */
+.composer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 1100px) {
+  .composer-grid { grid-template-columns: 1fr; }
+}
+
+/* === EDITOR PANE === */
+.editor-pane {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 580px;
+}
+
+/* Variant tabs — one per platform */
+.variant-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 8px 0;
+  gap: 4px;
+  background: var(--cream);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.variant-tabs::-webkit-scrollbar { display: none; }
+
+.variant-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px 11px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 9px 9px 0 0;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--ink-mid);
+  cursor: pointer;
+  margin-bottom: -1px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 140ms;
+}
+
+.variant-tab:hover { background: white; }
+
+.variant-tab.active {
+  background: white;
+  border-color: var(--rule);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.variant-tab .platform-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.variant-tab .dot-linkedin  { background: var(--src-linkedin); }
+.variant-tab .dot-x         { background: var(--src-x); border: 1px solid var(--rule-strong); }
+.variant-tab .dot-instagram { background: var(--src-instagram); }
+.variant-tab .dot-tiktok    { background: var(--src-tiktok); }
+.variant-tab .dot-youtube   { background: var(--src-youtube); }
+
+.variant-tab .char-count {
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.variant-tab.active .char-count { color: var(--ink-mid); }
+
+.variant-tab.error .char-count,
+.variant-tab .char-count.over {
+  color: var(--signal-err);
+  font-weight: 600;
+}
+
+.variant-tab.warn .char-count {
+  color: var(--signal-warn);
+  font-weight: 600;
+}
+
+.variant-tab .tab-state-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-left: 2px;
+}
+
+.variant-tab .tab-state-dot.disconnected { background: var(--signal-err); }
+.variant-tab .tab-state-dot.draft        { background: var(--signal-warn); }
+.variant-tab .tab-state-dot.ready        { background: var(--signal-ok); }
+
+/* Editor body */
+.editor-body {
+  padding: 18px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toolbar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: white;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.toolbar-pill:hover { border-color: var(--rule-strong); background: var(--cream); }
+
+.toolbar-spacer { flex: 1; }
+
+.ai-agent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--sunset);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(255, 107, 71, 0.30);
+  transition: transform 160ms, box-shadow 160ms;
+}
+
+.ai-agent-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(255, 107, 71, 0.30);
+}
+
+.ai-agent-btn .agent-chain {
+  font-size: 9.5px;
+  font-weight: 500;
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-left: 6px;
+  margin-left: 4px;
+  border-left: 1px solid rgba(255,255,255,0.30);
+}
+
+.editor-textarea-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 280px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 11px;
+  background: var(--cream);
+  font-family: inherit;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--navy);
+  resize: vertical;
+}
+
+.editor-textarea:focus {
+  outline: 2px solid var(--coral);
+  background: white;
+}
+
+.editor-textarea::placeholder {
+  color: var(--ink-soft);
+}
+
+.typing-pulse {
+  position: absolute;
+  top: 14px; right: 16px;
+  display: none;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--coral);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.editor-textarea:focus + .typing-pulse {
+  display: inline-block;
+}
+
+.editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+.media-strip {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.media-thumb {
+  width: 56px; height: 56px;
+  border-radius: 9px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+}
+
+.media-thumb.image {
+  background:
+    linear-gradient(135deg, rgba(255,107,71,0.20), rgba(255,200,87,0.30)),
+    linear-gradient(45deg, var(--cream) 25%, transparent 25%, transparent 75%, var(--cream) 75%, var(--cream)),
+    linear-gradient(45deg, var(--cream) 25%, transparent 25%, transparent 75%, var(--cream) 75%, var(--cream));
+}
+
+.media-thumb-remove {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.media-add {
+  width: 56px; height: 56px;
+  border-radius: 9px;
+  background: white;
+  border: 1px dashed var(--rule-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.media-add:hover { border-color: var(--coral); color: var(--coral); }
+
+.editor-error {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background: var(--signal-err-soft);
+  color: var(--signal-err);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.editor-warn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background: var(--signal-warn-soft);
+  color: var(--signal-warn);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* === PREVIEW PANE === */
+.preview-pane {
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 580px;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.preview-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.preview-tabs {
+  display: flex;
+  gap: 4px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.preview-tab {
+  width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.preview-tab:hover { color: var(--navy); }
+.preview-tab.active { background: var(--navy); color: var(--warm-white); }
+
+.preview-frame {
+  flex: 1;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 11px;
+  padding: 16px;
+  overflow: auto;
+}
+
+/* LinkedIn preview card */
+.li-card {
+  background: white;
+  border: 1px solid #e6e9eb;
+  border-radius: 6px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  color: #1d2226;
+  overflow: hidden;
+}
+
+.li-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 0;
+}
+
+.li-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #4A69BD;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.li-author-block { line-height: 1.25; }
+.li-author-name { font-weight: 600; font-size: 13.5px; color: #1d2226; }
+.li-author-meta { font-size: 11.5px; color: #56687a; }
+.li-author-meta .dot { margin: 0 4px; }
+
+.li-card-body {
+  padding: 10px 12px 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #1d2226;
+  white-space: pre-wrap;
+}
+
+.li-card-media {
+  width: 100%;
+  aspect-ratio: 1200 / 627;
+  background:
+    linear-gradient(135deg, rgba(10,102,194,0.20), rgba(70,153,237,0.30)),
+    var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(10,102,194,0.55);
+  font-size: 11px;
+  border-top: 1px solid #e6e9eb;
+  border-bottom: 1px solid #e6e9eb;
+}
+
+.li-card-actions {
+  display: flex;
+  border-top: 1px solid #e6e9eb;
+  padding: 4px 8px;
+  justify-content: space-around;
+}
+
+.li-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  color: #56687a;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* X preview tweet */
+.x-tweet {
+  background: white;
+  border: 1px solid #cfd9de;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #0f1419;
+}
+
+.x-tweet-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.x-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--src-x);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.x-author { line-height: 1.25; }
+.x-author-name { font-weight: 700; font-size: 14px; }
+.x-author-handle { color: #536471; font-size: 13.5px; }
+
+.x-tweet-body {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #0f1419;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+}
+
+.x-tweet-media {
+  width: 100%;
+  aspect-ratio: 1200 / 675;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.10), rgba(0,0,0,0.04)),
+    var(--cream);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #536471;
+  font-size: 11px;
+  margin: 6px 0;
+}
+
+.x-tweet-meta {
+  font-size: 12.5px;
+  color: #536471;
+  border-top: 1px solid #eff3f4;
+  padding-top: 8px;
+  display: flex;
+  gap: 18px;
+}
+
+/* TikTok preview — vertical caption overlay */
+.tt-preview {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  aspect-ratio: 9 / 16;
+  background:
+    linear-gradient(135deg, rgba(254,44,85,0.15), rgba(0,0,0,0.55)),
+    linear-gradient(180deg, var(--cream), var(--cream-soft, #ffeed9));
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.tt-preview .tt-watermark {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--src-tiktok);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  border: 2px solid white;
+}
+
+.tt-author {
+  position: absolute;
+  bottom: 80px; left: 14px;
+  font-size: 13.5px;
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.tt-caption {
+  position: absolute;
+  bottom: 12px; left: 14px; right: 60px;
+  font-size: 12.5px;
+  color: white;
+  line-height: 1.4;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: pre-wrap;
+}
+
+.tt-rail {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  color: white;
+}
+
+.tt-rail-item {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.30);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Instagram preview — square card */
+.ig-card {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+}
+
+.ig-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.ig-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--src-instagram);
+  border: 2px solid white;
+  box-shadow: 0 0 0 1.5px var(--src-tiktok);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.ig-author-name { font-weight: 600; font-size: 13.5px; }
+
+.ig-card-media {
+  width: 100%;
+  aspect-ratio: 1;
+  background:
+    linear-gradient(135deg, rgba(254,218,119,0.25), rgba(221,42,123,0.20), rgba(81,91,212,0.25)),
+    var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(221,42,123,0.55);
+  font-size: 11px;
+}
+
+.ig-card-actions {
+  display: flex;
+  gap: 16px;
+  padding: 8px 12px 4px;
+  color: #262626;
+}
+
+.ig-caption {
+  padding: 0 12px 10px;
+  font-size: 13px;
+  color: #262626;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.ig-caption-handle { font-weight: 600; margin-right: 6px; }
+
+.ig-caption-truncated {
+  color: #8e8e8e;
+  cursor: pointer;
+}
+
+/* YouTube preview — video card */
+.yt-card {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.yt-card-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background:
+    linear-gradient(135deg, rgba(255,0,0,0.18), rgba(0,0,0,0.40)),
+    var(--cream);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,0,0,0.75);
+}
+
+.yt-card-thumb .yt-duration {
+  position: absolute;
+  bottom: 6px; right: 6px;
+  padding: 1px 5px;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  font-size: 10.5px;
+  border-radius: 3px;
+}
+
+.yt-card-body {
+  padding: 10px 12px 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.yt-channel-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--src-youtube);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.yt-card-meta { flex: 1; min-width: 0; }
+.yt-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f0f0f;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.yt-channel-meta {
+  font-size: 12px;
+  color: #606060;
+}
+
+.yt-description {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 12.5px;
+  color: #606060;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Cross-fade when swapping preview */
+.preview-card { animation: cross-fade 220ms ease-out; }
+@keyframes cross-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === BOTTOM ACTION BAR === */
+.bottom-bar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 18px;
+  background: rgba(255,252,247,0.94);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--rule);
+  padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.bottom-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+
+.bottom-bar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* === STATE GALLERY === */
+.state-gallery {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 880px) { .state-gallery { grid-template-columns: 1fr; } }
+
+.state-card {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.state-card .state-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.state-card .state-body {
+  background: var(--cream);
+  border: 1px dashed var(--rule-strong);
+  border-radius: 9px;
+  padding: 14px;
+  font-size: 12.5px;
+  color: var(--ink-mid);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.empty-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-soft);
+}
+
+.state-card.error .state-body {
+  background: var(--signal-err-soft);
+  border-color: var(--signal-err);
+  color: var(--signal-err);
+  font-weight: 500;
+}
+
+.state-card.warn .state-body {
+  background: var(--signal-warn-soft);
+  border-color: var(--signal-warn);
+  color: var(--signal-warn);
+  font-weight: 500;
+}
+
+.state-card.ok .state-body {
+  background: var(--signal-ok-soft);
+  border-color: var(--signal-ok);
+  color: var(--signal-ok);
+  font-weight: 500;
+}
+
+/* === ANNOTATIONS === */
+.annotations {
+  max-width: 1440px;
+  margin: 48px auto 24px;
+  padding: 24px;
+  background: var(--cream);
+  border: 1px dashed var(--rule-strong);
+  border-radius: 16px;
+}
+
+.annotations h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.annotations h3 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mid);
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+.annotations p, .annotations li {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+.annotations ul { padding-left: 22px; }
+.annotations li { margin-bottom: 5px; }
+.annotations li strong { color: var(--navy); font-weight: 600; }
+.annotations code {
+  background: white;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--coral);
+  border: 1px solid var(--rule);
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="brand">maktura</div>
+  <div class="nav-items">
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Intelligence</div>
+    <div class="nav-item">Trends</div>
+    <div class="nav-item">Watch</div>
+    <div class="nav-item active">Composer</div>
+    <div class="nav-item">Calendar</div>
+    <div class="nav-item">Inbox</div>
+  </div>
+  <div class="user-chip">D</div>
+</nav>
+
+<div class="page">
+
+  <!-- Optional context chip — single line, dismissible. Only renders when
+       drafting from a trend / article / source-post handoff. Replaces the
+       old BackToTrendsBreadcrumb + SourcePostPanel without stacking. -->
+  <span class="context-chip">
+    <svg class="icon icon-xs" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    Drafting about <strong>SRA enforcement gap</strong> &middot; Law Society Gazette
+    <button class="context-close" aria-label="Dismiss source">
+      <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </span>
+
+  <!-- COMPACT HEADER -->
+  <div class="page-header">
+    <div class="title-block">
+      <h1 class="h1">Composer</h1>
+      <span class="draft-status">
+        <span class="live-dot"></span>
+        Draft saved 2 sec ago
+      </span>
+      <!-- Posting-as chip — replaces the OnBehalfPicker dropdown card. Click
+           to open the picker; when on your own account, this is hidden.
+           Avatar + name + chevron is the same shape as the persona picker. -->
+      <span
+        title="Posting on behalf of Sarah Adams — click to switch"
+        style="display:inline-flex; align-items:center; gap:8px; padding:3px 10px 3px 3px; background:linear-gradient(135deg, rgba(255,107,71,0.10), rgba(255,200,87,0.18)); border:1px solid var(--coral-dim); border-radius:999px; cursor:pointer;"
+      >
+        <span style="width:22px;height:22px;border-radius:50%;background:var(--sunset);color:white;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:10px;">SA</span>
+        <span style="font-size:11.5px;color:var(--ink);font-weight:600;">Posting as Sarah Adams</span>
+        <svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--coral);"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+    </div>
+    <div class="header-actions">
+      <!-- Top-bar actions REMOVED (PM 2026-05-24): all publish/schedule
+           actions live in the BottomActionBar to avoid duplicate buttons.
+           Header keeps History because it's a passive read-only affordance
+           that pairs with the title, not an action. -->
+      <button class="btn-ghost">
+        <!-- Lucide: history -->
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+        History
+      </button>
+    </div>
+  </div>
+
+  <!-- PERSONA STRIP -->
+  <div class="persona-strip">
+    <div class="persona-picker">
+      <div class="persona-avatar">JS</div>
+      <div class="persona-meta">
+        <span class="persona-name">John Smith</span>
+        <span class="persona-role">Individual &middot; MD voice</span>
+      </div>
+      <!-- Lucide: chevron-down -->
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="sep"></div>
+    <div class="style-chips">
+      <span class="style-chip">
+        <svg class="icon icon-xs style-chip-icon" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        UK English
+      </span>
+      <span class="style-chip">
+        <svg class="icon icon-xs style-chip-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+        No emoji
+      </span>
+      <span class="style-chip">
+        <svg class="icon icon-xs style-chip-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        End with question
+      </span>
+      <span class="style-chip regulated">
+        <svg class="icon icon-xs style-chip-icon" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        SRA-compliant disclaimers
+      </span>
+    </div>
+    <div class="persona-strip-spacer"></div>
+    <div class="persona-strip-meta">
+      <!-- Fit signals folded inline (replaces the old standalone ComposeFitPanel
+           card — same info, no extra row). Tooltips on hover show the why. -->
+      <span class="fit-chip ok" title="Audience match — UK legal partners">Audience 84%</span>
+      <span class="fit-chip warn" title="Voice match — softer hedging would lift to 90%">Voice 72%</span>
+      <span><strong>5</strong> rules &middot; <strong>184</strong> samples</span>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="composer-grid">
+
+    <!-- EDITOR PANE -->
+    <section class="editor-pane">
+
+      <!-- Per-platform variant tabs -->
+      <div class="variant-tabs" role="tablist" aria-label="Platform variant">
+        <button class="variant-tab active" role="tab" aria-selected="true">
+          <span class="platform-dot dot-linkedin"></span>
+          LinkedIn
+          <span class="char-count">412 / 3000</span>
+          <span class="tab-state-dot ready" title="Connected"></span>
+          <span class="override-toggle" title="Edit LinkedIn-specific overrides (caption / title / tags)">
+            <!-- Lucide: pencil-line -->
+            <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </span>
+        </button>
+        <button class="variant-tab warn" role="tab">
+          <span class="platform-dot dot-x"></span>
+          X
+          <span class="char-count over">298 / 280</span>
+          <span class="tab-state-dot ready" title="Connected"></span>
+        </button>
+        <button class="variant-tab" role="tab">
+          <span class="platform-dot dot-instagram"></span>
+          Instagram
+          <span class="char-count">0 / 2200</span>
+          <span class="tab-state-dot draft" title="Draft only"></span>
+        </button>
+        <button class="variant-tab" role="tab">
+          <span class="platform-dot dot-tiktok"></span>
+          TikTok
+          <span class="char-count">0 / 2200</span>
+          <span class="tab-state-dot draft" title="Draft only"></span>
+        </button>
+        <button class="variant-tab" role="tab">
+          <span class="platform-dot dot-youtube"></span>
+          YouTube
+          <span class="char-count">0 / 2200</span>
+          <span class="tab-state-dot disconnected" title="OAuth not connected"></span>
+        </button>
+      </div>
+
+      <!-- Editor body -->
+      <div class="editor-body">
+
+        <div class="editor-toolbar">
+          <!-- RichTextToolbar folded in as icon-only buttons (was a separate
+               row above the editor; now inline with the rest). -->
+          <button class="toolbar-pill" title="Bold (⌘B)" style="padding:5px 7px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 12a4 4 0 0 0 0-8H6v8"/><path d="M15 20a4 4 0 0 0 0-8H6v8Z"/></svg>
+          </button>
+          <button class="toolbar-pill" title="Italic (⌘I)" style="padding:5px 7px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+          </button>
+          <button class="toolbar-pill" title="Underline (⌘U)" style="padding:5px 7px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+          </button>
+          <button class="toolbar-pill" title="Link (⌘K)" style="padding:5px 7px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+          <span aria-hidden style="width:1px; height:18px; background:var(--rule); margin:0 2px;"></span>
+          <button class="toolbar-pill" title="Insert media">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            Library
+          </button>
+          <button class="toolbar-pill" title="GIF picker">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8v8M7 12h3"/><path d="M14 8h3v8"/><path d="M14 12h2"/></svg>
+            GIF
+          </button>
+          <button class="toolbar-pill" title="Emoji picker" style="padding:5px 7px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </button>
+          <button class="toolbar-pill" title="Mention">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
+            @ Mention
+          </button>
+          <button class="toolbar-pill" title="Hashtag">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            #
+          </button>
+          <div class="toolbar-spacer"></div>
+          <!-- Ask AI — opens the command palette (was the separate "Ask"
+               button row above the editor). Inline here next to Run agent. -->
+          <button class="toolbar-pill" title="Ask AI (⌘K)" style="border-color:var(--coral-dim); color:var(--coral); background:rgba(255,107,71,0.04);">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            Ask AI
+          </button>
+          <button class="ai-agent-btn" title="Run AI agent loop (Drafter → BrandRule → Rewriter)">
+            <!-- Lucide: sparkles -->
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+            Run agent
+            <span class="agent-chain">Drafter &rsaquo; BrandRule &rsaquo; Rewriter</span>
+          </button>
+        </div>
+
+        <div class="editor-textarea-wrap">
+          <textarea class="editor-textarea" placeholder="Start writing, or hit 'Run agent' to draft from your latest signals…">The SRA's enforcement gap on AI-content disclosure is closing fast. Three editorials in five days from Law Society Gazette have shifted the framing from "consultation" to "imminent change" — the moment for firms to audit their AI-content workflows is now, not after the rules land.
+
+A few things firms should be doing today:
+
+· Map every AI-generated content surface your firm publishes — blogs, social, client comms, marketing.
+· Confirm someone is reviewing for SRA Principles 4, 5, 7 conformance before publish.
+· Document the human-review step in a way you could surface in a future SRA inquiry.
+
+The firms moving on this now will quietly outrun the ones still waiting for guidance.
+
+What's your firm's current AI-content review workflow look like?</textarea>
+          <span class="typing-pulse"></span>
+        </div>
+
+        <div class="editor-footer">
+          <div class="media-strip">
+            <div class="media-thumb image" title="cover-image.jpg">
+              <span class="media-thumb-remove">&times;</span>
+              <svg class="icon icon-sm" viewBox="0 0 24 24" style="color: rgba(255,107,71,0.65);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            </div>
+            <div class="media-add" title="Add media">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="editor-warn">
+              <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              X variant 18 chars over
+            </span>
+            <span>Auto-save on</span>
+          </div>
+        </div>
+
+        <!-- Meta-chip row — Campaign · Category · Tags · Lead-capture
+             folded into one inline-chip strip. No extra card; just a row
+             of small clickable chips under the editor. -->
+        <div class="meta-chip-row">
+          <span class="meta-chip">
+            <svg class="icon icon-xs" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            Campaign: <strong>SRA-AI Q2</strong>
+          </span>
+          <span class="meta-chip">
+            <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Category: <strong>Regulatory analysis</strong>
+          </span>
+          <span class="meta-chip">
+            <svg class="icon icon-xs" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <strong>3</strong> tags
+          </span>
+          <span class="meta-chip on">
+            <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Lead capture <strong>ON</strong> &middot; all engagements
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW PANE -->
+    <aside class="preview-pane">
+      <div class="preview-header">
+        <span class="preview-label">
+          <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          Live preview — LinkedIn
+          <!-- 4 ambient-signal dots inline. Hover = tooltip; click = popover.
+               Replaces the giant AmbientSidebar card with a 4-pixel surface. -->
+          <span class="signals-dots" aria-label="Ambient signals">
+            <span class="sdot ok"   title="Privilege check · pass"></span>
+            <span class="sdot warn" title="Citation coverage · partial (add SRA link)"></span>
+            <span class="sdot ok"   title="Posting cadence · OK"></span>
+            <span class="sdot warn" title="Voice match · 72% — softer hedging lifts to 90%"></span>
+          </span>
+        </span>
+        <div class="preview-tabs" role="tablist" aria-label="Preview platform">
+          <button class="preview-tab active" title="LinkedIn">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 18V10h-2.5v8zM7.25 8.75a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM18 18v-4.4c0-2.36-1.27-3.46-2.97-3.46-1.37 0-1.98.75-2.33 1.27V10H10.2c.03.71 0 8 0 8h2.5v-4.45c0-.22.02-.45.08-.61.17-.45.58-.92 1.27-.92.89 0 1.25.68 1.25 1.67V18z"/></svg>
+          </button>
+          <button class="preview-tab" title="X">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.844l-5.36-7.012L4.66 22H1.4l8.02-9.165L1 2h7l4.84 6.4zM16.94 20l-9.07-12H6.04l9.06 12z"/></svg>
+          </button>
+          <button class="preview-tab" title="Instagram">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </button>
+          <button class="preview-tab" title="TikTok">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19 8.4a6.6 6.6 0 0 1-3.94-1.31v6.5a5.2 5.2 0 1 1-5.2-5.2c.36 0 .7.04 1.04.11v2.65a2.65 2.65 0 1 0 1.86 2.54V2h2.4a4.18 4.18 0 0 0 3.84 4.04z"/></svg>
+          </button>
+          <button class="preview-tab" title="YouTube">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.5 6.5a3 3 0 0 0-2.1-2.1C17.6 4 12 4 12 4s-5.6 0-7.4.4A3 3 0 0 0 2.5 6.5 31 31 0 0 0 2 12a31 31 0 0 0 .5 5.5A3 3 0 0 0 4.6 19.6C6.4 20 12 20 12 20s5.6 0 7.4-.4a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.5-5.5zM10 15V9l5 3z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-frame">
+        <!-- LinkedIn (active) -->
+        <div class="li-card preview-card">
+          <div class="li-card-head">
+            <div class="li-avatar">JS</div>
+            <div class="li-author-block">
+              <div class="li-author-name">John Smith</div>
+              <div class="li-author-meta">Managing Director · Setfords <span class="dot">·</span> 2nd</div>
+              <div class="li-author-meta">2s · <svg class="icon icon-xs" viewBox="0 0 24 24" style="color:#56687a"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            </div>
+          </div>
+          <div class="li-card-body">The SRA's enforcement gap on AI-content disclosure is closing fast. Three editorials in five days from Law Society Gazette have shifted the framing from "consultation" to "imminent change" — the moment for firms to audit their AI-content workflows is now, not after the rules land.
+
+A few things firms should be doing today:
+
+· Map every AI-generated content surface your firm publishes — blogs, social, client comms, marketing.
+· Confirm someone is reviewing for SRA Principles 4, 5, 7 conformance before publish.
+· Document the human-review step in a way you could surface in a future SRA inquiry.
+
+The firms moving on this now will quietly outrun the ones still waiting for guidance.
+
+What's your firm's current AI-content review workflow look like?</div>
+          <div class="li-card-media">1200 &times; 627</div>
+          <div class="li-card-actions">
+            <span class="li-action"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg> Like</span>
+            <span class="li-action"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg> Comment</span>
+            <span class="li-action"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Repost</span>
+            <span class="li-action"><svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+  <!-- /composer-grid -->
+
+  <!-- ============= ADDITIONAL PREVIEW EXAMPLES ============= -->
+  <h2 style="font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-soft); margin:36px 0 12px;">
+    Live preview — other platforms (per-variant)
+  </h2>
+
+  <div class="composer-grid" style="grid-template-columns: repeat(4, 1fr); gap:14px;">
+
+    <!-- X preview -->
+    <div class="preview-frame" style="padding:14px;">
+      <div class="x-tweet preview-card">
+        <div class="x-tweet-head">
+          <div class="x-avatar">J</div>
+          <div class="x-author">
+            <div class="x-author-name">John Smith <svg class="icon icon-xs" viewBox="0 0 24 24" fill="#1DA1F2" stroke="none" style="vertical-align:middle"><path d="M12 2 4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/></svg></div>
+            <div class="x-author-handle">@johnsmith_md</div>
+          </div>
+        </div>
+        <div class="x-tweet-body">SRA's enforcement gap on AI-content disclosure is closing fast — three LSG editorials in 5 days shifted framing from "consultation" to "imminent."
+
+Three things firms should do today: audit AI surfaces, log human-review, document for SRA inquiry.</div>
+        <div class="x-tweet-media">1200 &times; 675</div>
+        <div class="x-tweet-meta"><span>10:42 AM &middot; May 24, 2026</span></div>
+      </div>
+    </div>
+
+    <!-- Instagram preview -->
+    <div class="preview-frame" style="padding:14px;">
+      <div class="ig-card preview-card">
+        <div class="ig-card-head">
+          <div class="ig-avatar">JS</div>
+          <div class="ig-author-name">johnsmith.md</div>
+        </div>
+        <div class="ig-card-media">1080 &times; 1080</div>
+        <div class="ig-card-actions">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <div class="ig-caption">
+          <span class="ig-caption-handle">johnsmith.md</span>SRA enforcement is closing fast. Three steps for legal firms today: audit your AI surfaces, document human review, log everything…
+          <span class="ig-caption-truncated"> more</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TikTok preview -->
+    <div class="preview-frame" style="padding:14px; background:#000;">
+      <div class="tt-preview preview-card">
+        <div class="tt-watermark">d</div>
+        <div class="tt-author">@johnsmith.md</div>
+        <div class="tt-caption">If you're a law firm and you publish AI-generated content, the SRA enforcement gap closes this quarter. Three things to do today &raquo;</div>
+        <div class="tt-rail">
+          <div class="tt-rail-item">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="tt-rail-item">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+          </div>
+          <div class="tt-rail-item">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube preview -->
+    <div class="preview-frame" style="padding:14px;">
+      <div class="yt-card preview-card">
+        <div class="yt-card-thumb">
+          <svg class="icon icon-lg" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          <span class="yt-duration">3:24</span>
+        </div>
+        <div class="yt-card-body">
+          <div class="yt-channel-avatar">JS</div>
+          <div class="yt-card-meta">
+            <div class="yt-title">SRA enforcement on AI-content: three things every UK law firm should do this quarter</div>
+            <div class="yt-channel-meta">John Smith MD · 2k views · just now</div>
+            <div class="yt-description">SRA's enforcement gap on AI-content disclosure is closing fast. Three editorials in five days from LSG…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============= STATE GALLERY ============= -->
+  <h2 style="font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-soft); margin:36px 0 12px;">
+    States — empty, error, warning
+  </h2>
+
+  <div class="state-gallery">
+
+    <!-- Empty state -->
+    <div class="state-card">
+      <span class="state-label">Empty — nothing to write yet</span>
+      <div class="state-body">
+        <div class="empty-icon">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+        </div>
+        <div><strong>Start writing</strong>, or pull a signal from <a style="color:var(--coral); font-weight:600;">Watch</a> / <a style="color:var(--coral); font-weight:600;">Intelligence feed</a> to seed your draft.</div>
+        <div style="font-size:11.5px; color:var(--ink-soft);">'Run agent' uses your persona + latest signal context.</div>
+      </div>
+    </div>
+
+    <!-- Over-char-limit error -->
+    <div class="state-card error">
+      <span class="state-label">Error — over char limit on X</span>
+      <div class="state-body">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>X variant is <strong>18 characters over</strong> the 280 limit. Trim the X variant, or switch to schedule-LinkedIn-only.</div>
+      </div>
+    </div>
+
+    <!-- Missing image warning -->
+    <div class="state-card warn">
+      <span class="state-label">Warning — Instagram needs media</span>
+      <div class="state-body">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>Instagram posts <strong>require an image or video</strong>. Add one from Library, or remove Instagram from this draft.</div>
+      </div>
+    </div>
+
+    <!-- OAuth disconnected -->
+    <div class="state-card error">
+      <span class="state-label">Error — YouTube not connected</span>
+      <div class="state-body">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div>YouTube OAuth was revoked or expired. <a style="color:var(--signal-err); font-weight:700; text-decoration:underline;">Reconnect</a> to publish to YT — drafts can still be saved.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 style="font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-soft); margin:36px 0 12px;">
+    Embedded features — popovers / drawers / banners shown as their TRIGGER state
+  </h2>
+
+  <div class="state-gallery">
+
+    <!-- Schedule popover (trigger: clicking Schedule in BottomActionBar) -->
+    <div class="state-card">
+      <span class="state-label">Schedule — opens from BottomActionBar</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>  Schedule this post</span>
+          </div>
+          <div class="mock-row">
+            <input type="date" value="2026-05-28" style="padding:5px 8px; border:1px solid var(--rule); border-radius:6px; font-family:inherit; font-size:12px;" />
+            <input type="time" value="08:30" style="padding:5px 8px; border:1px solid var(--rule); border-radius:6px; font-family:inherit; font-size:12px;" />
+          </div>
+          <div class="mock-row" style="flex-wrap:wrap; gap:4px;">
+            <span style="background:var(--cream); border:1px solid var(--rule); padding:2px 8px; border-radius:999px; font-size:10.5px;">Tomorrow 9 AM</span>
+            <span style="background:var(--cream); border:1px solid var(--rule); padding:2px 8px; border-radius:999px; font-size:10.5px;">Mon 8 AM</span>
+            <span style="background:var(--cream); border:1px solid var(--rule); padding:2px 8px; border-radius:999px; font-size:10.5px;">Best slot (Wed 11 AM)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Version history drawer (trigger: clicking History in CompactHeader) -->
+    <div class="state-card">
+      <span class="state-label">Version history — slides in from History toggle</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg> 7 snapshots</span>
+            <span style="font-size:10px;">v3 current</span>
+          </div>
+          <div class="mock-row" style="border-bottom:1px solid var(--rule); padding-bottom:6px;">
+            <span style="font-size:10.5px; color:var(--ink-soft);">10:42</span>
+            <span style="flex:1; color:var(--navy);">"The SRA's enforcement gap on AI-content..."</span>
+          </div>
+          <div class="mock-row" style="border-bottom:1px solid var(--rule); padding-bottom:6px;">
+            <span style="font-size:10.5px; color:var(--ink-soft);">10:38</span>
+            <span style="flex:1;">"SRA enforcement is closing fast..."</span>
+            <span style="font-size:10.5px; color:var(--coral); font-weight:600;">Restore</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-size:10.5px; color:var(--ink-soft);">10:30</span>
+            <span style="flex:1;">"AI-content rules are coming..."</span>
+            <span style="font-size:10.5px; color:var(--coral); font-weight:600;">Restore</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-platform override drawer (trigger: pencil icon on variant tab) -->
+    <div class="state-card">
+      <span class="state-label">Override drawer — opens from pencil on active tab</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span>LinkedIn override</span>
+            <span style="font-size:10px;">falls back to main body when empty</span>
+          </div>
+          <textarea placeholder="LinkedIn-specific copy (optional)…" style="width:100%; padding:6px 8px; border:1px solid var(--rule); border-radius:6px; font-family:inherit; font-size:11.5px; min-height:42px; resize:vertical;"></textarea>
+          <div class="mock-row">
+            <input placeholder="Title (LI Article)" style="flex:1; padding:5px 8px; border:1px solid var(--rule); border-radius:6px; font-family:inherit; font-size:11.5px;" />
+            <input placeholder="#tags" style="width:120px; padding:5px 8px; border:1px solid var(--rule); border-radius:6px; font-family:inherit; font-size:11.5px;" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Must-approve modal (trigger: author has approval policy) -->
+    <div class="state-card warn">
+      <span class="state-label">Must approve — Publish hidden, Send-for-approval primary</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame warn">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Approval required</span>
+          </div>
+          <div style="font-size:11.5px;">Bottom-bar swaps Publish + Schedule for a single sunset <strong>Send for approval</strong>. Approver fires the downstream publish-or-schedule with the scheduledAt the author set.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-behalf banner (trigger: posting on someone else's account) -->
+    <div class="state-card">
+      <span class="state-label">On-behalf — sunset border on editor + banner</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame coral">
+          <div class="mock-row">
+            <span style="width:28px; height:28px; border-radius:50%; background:var(--sunset); color:white; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; flex-shrink:0;">SA</span>
+            <span><strong>Posting on behalf of Sarah Adams.</strong> Editor border switches to sunset gradient so it reads "this isn't your account." Publish confirms via modal.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LinkedIn safety banner (trigger: connection near rate limit) -->
+    <div class="state-card warn">
+      <span class="state-label">LinkedIn safety — rate-limit aware banner</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame warn">
+          <div class="mock-row">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <span><strong>2 accounts protected.</strong> Sarah Adams at 4/5 today &middot; next slot in 22m. Click to expand per-account limits.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Read-only state -->
+    <div class="state-card">
+      <span class="state-label">Read-only — PUBLISHED posts</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg> Published</span>
+          </div>
+          <div style="font-size:11.5px;">Posts in PUBLISHED state render this surface read-only — banner up top, editor disabled, bottom-bar hidden. Edit-republish goes through Variant Lab, not here.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chromeless mode -->
+    <div class="state-card">
+      <span class="state-label">Chromeless (?chromeless=1)</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg> Distraction-free</span>
+          </div>
+          <div style="font-size:11.5px;">Hides top-nav + every banner / chip / metadata block. Just CompactHeader + editor + sticky bottom bar. "Exit fullscreen" returns to standard layout.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ambient signals popover (trigger: hover/click the dots in preview header) -->
+    <div class="state-card">
+      <span class="state-label">Ambient signals — popover from preview-header dots</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-row" style="justify-content:space-between;">
+            <span>Privilege check</span>
+            <span style="background:var(--signal-ok-soft); color:var(--signal-ok); padding:1px 7px; border-radius:4px; font-size:10px; font-weight:700;">PASS</span>
+          </div>
+          <div class="mock-row" style="justify-content:space-between;">
+            <span>Citation coverage</span>
+            <span style="background:var(--signal-warn-soft); color:var(--signal-warn); padding:1px 7px; border-radius:4px; font-size:10px; font-weight:700;">PARTIAL</span>
+          </div>
+          <div class="mock-row" style="justify-content:space-between;">
+            <span>Posting cadence</span>
+            <span style="background:var(--signal-ok-soft); color:var(--signal-ok); padding:1px 7px; border-radius:4px; font-size:10px; font-weight:700;">OK</span>
+          </div>
+          <div class="mock-row" style="justify-content:space-between;">
+            <span>Voice match</span>
+            <span style="font-weight:600; color:var(--signal-warn);">72%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules-check expanded -->
+    <div class="state-card">
+      <span class="state-label">Rules check — expanded from inline pill</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span>5 rules · all pass</span>
+          </div>
+          <div class="mock-row"><svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--signal-ok); width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg> UK English</div>
+          <div class="mock-row"><svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--signal-ok); width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg> No emoji</div>
+          <div class="mock-row"><svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--signal-ok); width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg> SRA disclaimer present</div>
+          <div class="mock-row"><svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--signal-ok); width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg> CTA at end</div>
+          <div class="mock-row"><svg class="icon icon-xs" viewBox="0 0 24 24" style="color:var(--signal-ok); width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg> Under 3000 chars</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Library / GIF / Emoji picker pop-in -->
+    <div class="state-card">
+      <span class="state-label">Library / GIF / Emoji — popover from toolbar</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg> 42 items</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(6, 1fr); gap:4px;">
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(255,107,71,0.20), rgba(255,200,87,0.30)); border-radius:5px;"></div>
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(10,102,194,0.20), rgba(70,153,237,0.30)); border-radius:5px;"></div>
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(221,42,123,0.20), rgba(81,91,212,0.30)); border-radius:5px;"></div>
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(255,0,0,0.20), rgba(0,0,0,0.10)); border-radius:5px;"></div>
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(34,136,79,0.20), rgba(255,200,87,0.30)); border-radius:5px;"></div>
+            <div style="aspect-ratio:1; background:linear-gradient(135deg, rgba(254,44,85,0.20), rgba(0,0,0,0.15)); border-radius:5px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Persona-style hint -->
+    <div class="state-card">
+      <span class="state-label">Persona drift hint — coral card under editor</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame coral">
+          <div class="mock-row">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" style="color:var(--coral);"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <span><strong>Voice match 72%.</strong> John's recent posts lean more measured. Soften "outrun" → "stay ahead of"? <span style="color:var(--coral); font-weight:600; cursor:pointer;">Apply</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Read-only mode (PUBLISHED post) -->
+    <div class="state-card">
+      <span class="state-label">Read-only — opened a PUBLISHED post</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame">
+          <div class="mock-title">
+            <span><svg class="icon icon-xs" viewBox="0 0 24 24" style="vertical-align:-2px;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg> Published 2d ago — read-only</span>
+            <a style="color:var(--coral); font-weight:600;">View on LinkedIn</a>
+          </div>
+          <div style="font-size:11.5px;">Editor disabled · Variant tabs read-only · Bottom-bar hidden · No publish/schedule controls. Edit-republish goes through Variant Lab.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Target user has no LinkedIn connected (on-behalf prereq error) -->
+    <div class="state-card err">
+      <span class="state-label">On-behalf target has no LinkedIn — block before edit</span>
+      <div class="state-body" style="padding: 8px;">
+        <div class="mock-frame err">
+          <div class="mock-row">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" style="color:var(--signal-err);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><strong>Sarah Adams has no LinkedIn account connected.</strong> Ask her to connect one before posting on her behalf. <span style="color:var(--signal-err); font-weight:600; cursor:pointer; text-decoration:underline;">Send reminder</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============= BOTTOM ACTION BAR ============= -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-left">
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Last edit just now · ⌘S Save · ⌘⇧⏎ Publish
+    </div>
+    <div class="bottom-bar-actions">
+      <button class="btn-ghost">Cancel</button>
+      <button class="btn-secondary">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save draft
+      </button>
+      <button class="btn-secondary">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
+        Send for approval
+      </button>
+      <button class="btn-secondary">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Schedule
+      </button>
+      <button class="btn-primary">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Publish now
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- /page -->
+
+<!-- ============= ANNOTATIONS ============= -->
+<section class="annotations">
+  <h2>
+    <svg class="icon" viewBox="0 0 24 24"><path d="M21 14h-5"/><path d="M16 2v6h6"/><path d="m16.5 8.5 5-5"/><path d="M7 21h11a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2"/><path d="M3 21h2"/><path d="M3 14h2"/><path d="M3 7h2"/></svg>
+    Composer redesign — what's in v1 (and why)
+  </h2>
+
+  <p>
+    Built per spec on <strong>2026-05-24</strong> (#2443). PM brief:
+    "I like the structure of the current beta composer — keep the
+    interaction model. Visual brand pass + missing-elements audit, not
+    a re-architecture." This mockup is Phase 1; live code lands in
+    Phase 2 once PM signs off.
+  </p>
+
+  <h3>Brand vocabulary applied</h3>
+  <ul>
+    <li><strong>CompactHeader</strong> per #2347 — "Composer" title + draft-saved status + actions (no big PageHero blob).</li>
+    <li><strong>Concept 2 sunset</strong> on the AI-agent button + primary Publish / Schedule CTAs.</li>
+    <li><strong>Coral pulse</strong> on draft-saved status dot + typing indicator (respects <code>prefers-reduced-motion</code>).</li>
+    <li><strong>Warm-cream surfaces</strong> throughout — no <code>bg-white</code> / <code>bg-slate-*</code> / <code>text-slate-*</code>. Editor textarea uses <code>--cream</code>; the persona strip / tools / preview frame all sit on <code>--cream</code> or <code>--warm-white</code>.</li>
+    <li><strong>All Lucide</strong> icons via inline SVG. Zero emoji.</li>
+    <li><strong>Cross-fade animation</strong> on preview card swap; tab-swap micro-fade on variant tabs.</li>
+  </ul>
+
+  <h3>Per-platform variant editor (multi-platform from day one)</h3>
+  <p>
+    Per <code>feedback_multi_platform_in_every_design.md</code>: every
+    composer view assumes the post has variants for every connected
+    platform. The tabs encode three signals at once:
+  </p>
+  <ul>
+    <li><strong>Platform brand dot</strong> (LinkedIn navy, X black, IG sunset gradient, TikTok #FE2C55, YT red) — instant scan of which platform the variant is for.</li>
+    <li><strong>Char count vs platform limit</strong> from <code>platformMeta()</code> (LinkedIn 3000 · X 280 · IG 2200 · TT 2200 · YT 2200). Tab flips to amber once over, red when materially over.</li>
+    <li><strong>Connection state dot</strong> at the right of each tab — green = OAuth connected + publish-ready, amber = draft only (no OAuth), red = OAuth revoked / expired.</li>
+  </ul>
+  <p>
+    Active LinkedIn variant shown in the preview; click any other tab
+    to swap. Per-platform char limits + connection status mirror the
+    runtime values from <code>platformMeta()</code> (#2318) — do not
+    duplicate the registry in this surface.
+  </p>
+
+  <h3>Persona voice indicator + style-rule chips</h3>
+  <ul>
+    <li>Compact persona picker — avatar + name + category subtitle. Click opens the persona dropdown.</li>
+    <li>Style-rule chips lifted from the persona's mandatory toolkits + custom rules. SRA-compliant chip is coral-styled to mark a regulated rule (per #1482 regulated-persona safety pattern).</li>
+    <li>Right side shows rule count + sample count so the user can see at a glance how much voice context the AI agent has to work with.</li>
+  </ul>
+
+  <h3>AI agent loop trigger</h3>
+  <ul>
+    <li>Single sunset-gradient "Run agent" button surfaces the existing Mastra Phase 1 agent chain (Drafter &rsaquo; BrandRule &rsaquo; Rewriter, shipped under PR #2240).</li>
+    <li>The chain order is visible in the button itself — no hidden behaviour.</li>
+    <li>Runs against the current persona + connected signal context (whatever's pinned from Watch / Intelligence feed).</li>
+  </ul>
+
+  <h3>Live preview pane (per-platform chrome)</h3>
+  <ul>
+    <li><strong>LinkedIn</strong> — full LI card with author/role/timestamp, post body, 1200×627 media slot, reaction row.</li>
+    <li><strong>X</strong> — tweet card with name/handle + verified glyph + 1200×675 media + timestamp footer.</li>
+    <li><strong>Instagram</strong> — square 1:1 card with handle, gradient avatar ring, caption truncation, action row.</li>
+    <li><strong>TikTok</strong> — vertical 9:16 frame with caption overlay + side rail + watermark.</li>
+    <li><strong>YouTube</strong> — landscape thumbnail + duration badge + channel avatar + title/description block.</li>
+  </ul>
+  <p>
+    Each preview uses authentic-feeling chrome (Segoe/Roboto fonts where appropriate, platform-shaped action rows) so the user sees the post as it'll actually appear — not as a generic preview.
+  </p>
+
+  <h3>Bottom action bar</h3>
+  <p>
+    Sticky-blur bottom strip with the five canonical actions in priority order:
+    <strong>Cancel</strong> · <strong>Save draft</strong> ·
+    <strong>Send for approval</strong> · <strong>Schedule</strong> ·
+    <strong>Publish now</strong>. Keyboard hints inline on the left
+    (⌘S / ⌘⇧⏎) so power users can stay on the keyboard.
+  </p>
+
+  <h3>State coverage</h3>
+  <p>The state gallery shows four canonical non-happy-path states:</p>
+  <ul>
+    <li><strong>Empty</strong> — onboarding nudge points at Watch / Intelligence feed as signal seeds.</li>
+    <li><strong>Over char limit</strong> — explicit "X variant 18 over" call with options to trim or LinkedIn-only schedule.</li>
+    <li><strong>Missing media (IG)</strong> — Instagram requires media; warn explains the constraint + actionable next step.</li>
+    <li><strong>OAuth disconnected (YT)</strong> — reconnect link is one click; drafts can still be saved.</li>
+  </ul>
+
+  <h3>What's deliberately NOT in v1</h3>
+  <ul>
+    <li><strong>No platform-publishing changes</strong> — the Mastra agent loop, the publish-to-LinkedIn worker, OAuth handling all stay (out of scope per spec).</li>
+    <li><strong>No new AI providers</strong> — Drafter / BrandRule / Rewriter chain unchanged.</li>
+    <li><strong>No persona model changes</strong> — picker reads from existing <code>Persona</code> + <code>PersonaToolkit</code> shape.</li>
+    <li><strong>No bulk-compose / wizard re-introduction</strong> — that was removed; batch generation lives in Ask AI command-bar per CLAUDE.md.</li>
+    <li><strong>No A/B variant Lab embedding</strong> — Variant Lab (#2009 / #2196) is a separate surface (its own redesign ticket).</li>
+  </ul>
+
+  <h3>Refs</h3>
+  <p>
+    <code>#2443</code> this ticket &middot;
+    <code>#2347</code> CompactHeader &middot;
+    <code>#2318</code> multi-platform UI presence (<code>platformMeta()</code> source) &middot;
+    <code>#2240</code> Mastra agent loop (Drafter / BrandRule / Rewriter shipped) &middot;
+    <code>#1482</code> regulated-persona toolkits &middot;
+    <code>#2009</code> existing Composer surface.
+    Memory rules: <code>feedback_render_mockup_before_components.md</code>,
+    <code>feedback_mockup_parity_not_shape.md</code>,
+    <code>feedback_no_tailwind_defaults_use_brand_tokens.md</code>,
+    <code>feedback_no_emoji_icons.md</code>,
+    <code>feedback_multi_platform_in_every_design.md</code>,
+    <code>feedback_concept2_visual_patterns_default.md</code>,
+    <code>feedback_design_for_the_page_not_the_template.md</code>,
+    <code>feedback_tailwind_polish_is_default_not_optional.md</code>.
+  </p>
+
+  <h3>For Phase 2 implementation (after PM signoff)</h3>
+  <ul>
+    <li>Composer page = <code>apps/web/src/app/dashboard/composer/</code> (the "beta" the spec refers to — distinct from the legacy <code>apps/web/src/app/dashboard/compose/</code>).</li>
+    <li>Header swaps to <code>&lt;CompactHeader title="Composer" meta={savedStatus} actions={...} /&gt;</code> from #2347.</li>
+    <li>Platform tabs source <code>platformMeta()</code> + <code>limitFor()</code> from <code>apps/web/src/lib/platforms/{meta,limits}.ts</code>. Per-platform char counts + connection status read from runtime, do NOT hand-roll a second registry.</li>
+    <li>AI-agent button posts to the existing Mastra route (PR #2240) — surfaces the chain visibly per this mockup.</li>
+    <li>Preview pane components live alongside the editor — one file per platform-preview to keep each under the file-size cap.</li>
+    <li>Brand-token discipline is a hard AC (Phase 2 grep gate per spec). Every <code>bg-*</code> / <code>text-*</code> / <code>border-*</code> reads from the CSS variables in <code>:root</code>, never raw Tailwind defaults.</li>
+    <li>Motion primitives from <code>apps/web/src/components/motion/</code> (#170) — <code>CrossFade</code> for preview swap, <code>FadeIn</code> for tab transitions.</li>
+  </ul>
+</section>
+
+</body>
+</html>
